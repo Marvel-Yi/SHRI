@@ -97,6 +97,15 @@ public class UserService implements CommonConstant {
         loginTicketMapper.insertTicket(loginTicket);
         json.put("code", 0);
         json.put("msg", loginTicket.getUuid());
+        json.put("userName", user.getUserName());
         return json;
+    }
+
+    public LoginTicket getLoginTicket(String uuid) {
+        return loginTicketMapper.selectByUuid(uuid);
+    }
+
+    public User getUserById(int userId) {
+        return userMapper.selectById(userId);
     }
 }

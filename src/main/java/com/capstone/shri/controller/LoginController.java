@@ -7,6 +7,9 @@ import com.capstone.shri.util.CommonConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 @RestController
 public class LoginController implements CommonConstant {
     @Autowired
@@ -18,8 +21,19 @@ public class LoginController implements CommonConstant {
     }
 
     @PostMapping("/login")
-    public String login(String userName, String password) {
+    public String login(String userName, String password, HttpServletResponse response) {
         JSONObject jsonObject = userService.login(userName, password);
+        Object code = jsonObject.get("code");
+        if (code instanceof Integer) {
+            Integer c = (Integer) code;
+            if (c.intValue() == 0) {
+                Object uuid = jsonObject.get("msg");
+                Cookie cookie = new Cookie("ticket", uuid.toString());
+                cookie.setPath("/");
+                cookie.setMaxAge(LOGIN_EXPIRE_SECONDS);
+                response.addCookie(cookie);
+            }
+        }
         return jsonObject.toJSONString();
     }
 }
