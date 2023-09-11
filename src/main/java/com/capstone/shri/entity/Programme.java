@@ -9,6 +9,7 @@ import java.util.Date;
 public class Programme {
     private int id;
     private String name;
+    private String studyMode;
     private String certificateType;
     private int commitmentMonths;
     private int intakes;
