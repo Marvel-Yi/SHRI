@@ -21,8 +21,8 @@ public class LoginController implements CommonConstant {
     }
 
     @PostMapping("/login")
-    public String login(String userName, String password, HttpServletResponse response) {
-        JSONObject jsonObject = userService.login(userName, password);
+    public String login(@RequestBody User user, HttpServletResponse response) {
+        JSONObject jsonObject = userService.login(user.getUserName(), user.getPassword());
         Object code = jsonObject.get("code");
         if (code instanceof Integer) {
             Integer c = (Integer) code;

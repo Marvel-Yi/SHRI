@@ -9,7 +9,7 @@
         assessment, delivery_mode, cur_stu_cnt, cur_teacher_cnt, certified_by
     </sql>
 
-    <select id="selectAllPosts" resultType="Programme">
+    <select id="selectProgrammeList" resultType="Programme">
         select <include refid="selectFields"></include>
         from programme
         limit #{offset}, #{limit}

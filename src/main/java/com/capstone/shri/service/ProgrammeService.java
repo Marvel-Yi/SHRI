@@ -4,6 +4,7 @@ import com.capstone.shri.controller.dto.ProgrammeFilterReq;
 import com.capstone.shri.dao.ProgrammeMapper;
 import com.capstone.shri.entity.Programme;
 import com.capstone.shri.util.CommonUtil;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,15 +24,19 @@ public class ProgrammeService {
     }
 
     public List<Programme> getAllProgrammesWithFilters(ProgrammeFilterReq req) {
-        if (req.getStudyMode() == null && req.getCertificateTypes() == null) {
+        if (Strings.isBlank(req.getStudyMode()) && isBlankList(req.getCertificateTypes())) {
             return programmeMapper.selectProgrammeList(req.getOffset(), req.getLimit());
         }
-        if (req.getStudyMode() == null) {
+        if (Strings.isBlank(req.getStudyMode())) {
             return programmeMapper.selectProgrammeByCertificate(req.getOffset(), req.getLimit(), req.getCertificateTypes());
         }
-        if (req.getCertificateTypes() == null) {
+        if (isBlankList(req.getCertificateTypes())) {
             return programmeMapper.selectProgrammeByMode(req.getOffset(), req.getLimit(), req.getStudyMode());
         }
         return programmeMapper.selectProgrammeByFilters(req.getOffset(), req.getLimit(), req.getStudyMode(), req.getCertificateTypes());
+    }
+
+    private boolean isBlankList(List list) {
+        return list == null || list.size() == 0;
     }
 }
