@@ -3,6 +3,7 @@ package com.capstone.shri.entity;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 
 @Data
@@ -19,8 +20,8 @@ public class Programme {
     private int graduateStuCnt;
     private String objective;
     private String whoShouldAttend;
-    private LocalDateTime courseBeginTime;
-    private LocalDateTime courseEndTime;
+    private LocalTime courseBeginTime;
+    private LocalTime courseEndTime;
     private String programmeNotes;
     private String assessment;
     private String deliveryMode;

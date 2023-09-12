@@ -31,7 +31,19 @@ public class CommonUtil {
         return getJSONString(code, msg, null);
     }
 
+    public static String getJsonRes(int code, String msg, Object data) {
+        JSONObject json = new JSONObject();
+        json.put("code", code);
+        json.put("msg", msg);
+        json.put("data", data);
+        return json.toJSONString();
+    }
+
     public static String generateUUID() {
         return UUID.randomUUID().toString().replaceAll("-", "");
+    }
+
+    public static int getOffset(int cur, int limit) {
+        return (cur - 1) * limit;
     }
 }

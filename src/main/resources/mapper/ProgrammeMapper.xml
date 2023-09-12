@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.capstone.shri.dao.ProgrammeMapper">
+    <sql id="selectFields">
+        id, name, study_mode, certificate_type, commitment_months, intakes, intake_date, cpd_hours, fee,
+        graduated_stu_cnt, objective, who_should_attend, course_begin_time, course_end_time, programme_notes,
+        assessment, delivery_mode, cur_stu_cnt, cur_teacher_cnt, certified_by
+    </sql>
+
+    <select id="selectAllPosts" resultType="Programme">
+        select <include refid="selectFields"></include>
+        from programme
+        limit #{offset}, #{limit}
+    </select>
+
+    <select id="selectProgrammeById" resultType="Programme">
+        select <include refid="selectFields"></include>
+        from programme
+        where id = #{id}
+    </select>
+
+    <select id="selectProgrammeByMode" resultType="Programme">
+        select <include refid="selectFields"></include>
+        from programme
+        where study_mode = #{studyMode}
+        limit #{offset}, #{limit}
+    </select>
+
+    <select id="selectProgrammeByCertificate" resultType="Programme">
+        select <include refid="selectFields"></include>
+        from programme
+        where certificate_type in
+        <foreach collection="certificateTypes" item="certificate" open="(" close=")" separator=",">
+            #{certificate}
+        </foreach>
+        limit #{offset}, #{limit}
+    </select>
+
+    <select id="selectProgrammeByFilters" resultType="Programme">
+        select <include refid="selectFields"></include>
+        from programme
+        where certificate_type in
+        <foreach collection="certificateTypes" item="certificate" open="(" close=")" separator=",">
+            #{certificate}
+        </foreach>
+        and study_mode = #{studyMode}
+        limit #{offset}, #{limit}
+    </select>
+</mapper>
