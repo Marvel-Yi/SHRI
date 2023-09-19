@@ -98,6 +98,8 @@ public class UserService implements CommonConstant {
         json.put("code", 0);
         json.put("msg", loginTicket.getUuid());
         json.put("userName", user.getUserName());
+        json.put("userMail", user.getEmail());
+        json.put("userType", user.getUserType());
         return json;
     }
 

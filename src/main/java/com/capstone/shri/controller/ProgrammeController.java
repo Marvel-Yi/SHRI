@@ -15,13 +15,13 @@ public class ProgrammeController implements CommonConstant {
     @Autowired
     private ProgrammeService programmeService;
 
-    @GetMapping("/programmeDetail/{programmeId}")
+    @GetMapping("/programme/detail/{programmeId}")
     public String getProgrammeById(@PathVariable("programmeId") int programmeId) {
         Programme programme = programmeService.getProgrammeById(programmeId);
         return CommonUtil.getJsonRes(0, "succeed", programme);
     }
 
-    @PostMapping("/programmeList")
+    @PostMapping("/programme/list")
     public String getProgrammeListByFilter(@RequestBody ProgrammeFilterReq programmeFilterReq) {
         List<Programme> programmes = programmeService.getAllProgrammesWithFilters(programmeFilterReq);
         return CommonUtil.getJsonRes(0, "succeed", programmes);

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.capstone.shri.dao.InterestMapper">
+    <sql id="selectFields">
+        id, user_name, user_email, content, status, response
+    </sql>
+
+    <update id="updateStatus">
+        update interest set status = #{status}, set response = #{response}
+        where id = #{id}
+    </update>
+
+    <select id="selectInterests" resultType="Interest">
+        select <include refid="selectFields"></include>
+        from interest
+        where status = #{status}
+        limit #{offset}, #{limit}
+    </select>
+
+    <insert id="insertInterest" parameterType="Interest" keyProperty="id">
+        insert into interest (user_name, user_email, content, status, response)
+        values (#{userName}, #{userEmail}, #{content}, #{status}, #{response})
+    </insert>
+
+    <select id="selectInterestById" resultType="Interest">
+        select <include refid="selectFields"></include>
+        from interest
+        where id = #{id}
+    </select>
+</mapper>
