@@ -1,6 +1,7 @@
 package com.capstone.shri.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.capstone.shri.dao.AppFormDataMapper;
 import com.capstone.shri.dao.LoginTicketMapper;
 import com.capstone.shri.dao.UserMapper;
 import com.capstone.shri.entity.LoginTicket;
@@ -24,6 +25,9 @@ public class UserService implements CommonConstant {
 
     @Autowired
     private MailClient mailClient;
+
+    @Autowired
+    private AppFormDataMapper appFormDataMapper;
 
     public String register(User user) {
         // null or blank
@@ -95,11 +99,14 @@ public class UserService implements CommonConstant {
         loginTicket.setLoginStatus(0); // 0 means status login
         loginTicket.setExpired(new Date(System.currentTimeMillis() + LOGIN_EXPIRE_SECONDS * 1000));
         loginTicketMapper.insertTicket(loginTicket);
+
         json.put("code", 0);
         json.put("msg", loginTicket.getUuid());
         json.put("userName", user.getUserName());
         json.put("userMail", user.getEmail());
         json.put("userType", user.getUserType());
+        boolean hasFormData = appFormDataMapper.hasUserFormData(user.getId()) > 0;
+        json.put("hasFormData", hasFormData);
         return json;
     }
 

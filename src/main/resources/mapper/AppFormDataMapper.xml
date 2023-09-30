@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.capstone.shri.dao.AppFormDataMapper">
+    <sql id="selectFields">
+        id, user_id, passport_no, passport_name, gender, birth, country, pass_type, fin_no, pass_expire, address,
+        postal_code, academic_institution_name, academic_qualification_name, qualification_complete_year, company_name,
+        company_industry, sponsor_type, info_source, apply_date
+    </sql>
+
+    <insert id="insertAppFormData" parameterType="UserAppFormData" keyProperty="id">
+        insert into user_app_form_data (user_id, passport_no, passport_name, gender, birth, country, pass_type, fin_no,
+        pass_expire, address, postal_code, academic_institution_name, academic_qualification_name,
+        qualification_complete_year, company_name, company_industry, sponsor_type, info_source, apply_date)
+        values (#{userId}, #{passportNo}, #{passportName}, #{gender}, #{birth}, #{country}, #{passType}, #{finNo},
+        #{passExpire}, #{address}, #{postalCode}, #{academicInstitutionName}, #{academicQualificationName},
+        #{qualificationCompleteYear}, #{companyName}, #{companyIndustry}, #{sponsorType}, #{infoSource}, #{applyDate})
+    </insert>
+
+    <select id="hasUserFormData" resultType="int">
+        select count(*) from user_app_form_data
+        where user_id = #{userId}
+    </select>
+
+    <select id="selectFormDataByUserId" resultType="UserAppFormData">
+        select <include refid="selectFields"></include>
+        from user_app_form_data
+        where user_id = #{userId}
+    </select>
+</mapper>

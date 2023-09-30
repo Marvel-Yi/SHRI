@@ -12,7 +12,7 @@
         values (#{userId}, #{uuid}, #{loginStatus}, #{expired})
     </insert>
 
-    <select id="selectByTicket" resultType="LoginTicket">
+    <select id="selectByUuid" resultType="LoginTicket">
         select <include refid="selectFields"></include>
         from login_ticket
         where uuid = #{uuid}

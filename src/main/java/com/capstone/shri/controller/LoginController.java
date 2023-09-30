@@ -30,7 +30,6 @@ public class LoginController implements CommonConstant {
                 Object uuid = jsonObject.get("msg");
                 Cookie cookie = new Cookie("ticket", uuid.toString());
                 cookie.setPath("/");
-                cookie.setMaxAge(LOGIN_EXPIRE_SECONDS);
                 response.addCookie(cookie);
             }
         }
