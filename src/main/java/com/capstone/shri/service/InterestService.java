@@ -6,6 +6,9 @@ import com.capstone.shri.util.CommonConstant;
 import com.capstone.shri.util.MailClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -33,9 +36,8 @@ public class InterestService implements CommonConstant {
         return interestMapper.selectInterests(TYPE_PROCESSED, offset, limit);
     }
 
-    public int replyInterest(Interest interest) {
-        int res = interestMapper.updateStatus(interest.getId(), TYPE_PROCESSED, interest.getResponse());
+    public void replyInterest(Interest interest) {
+        interestMapper.update(interest.getId(), TYPE_PROCESSED, interest.getResponse());
         mailClient.send(interest.getUserEmail(), EMAIL_SUBJECT_INTEREST_RESPONSE, interest.getResponse());
-        return res;
     }
 }

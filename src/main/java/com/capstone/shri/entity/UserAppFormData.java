@@ -43,9 +43,7 @@ public class UserAppFormData {
 
     private String companyIndustry;
 
-    private int sponsorType; // 0:self, 1:company
+    private int sponsorType; // 0: self, 1: company
 
     private String infoSource;
-
-    private Date applyDate;
 }

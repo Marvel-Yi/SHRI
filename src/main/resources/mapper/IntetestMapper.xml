@@ -8,7 +8,17 @@
     </sql>
 
     <update id="updateStatus">
-        update interest set status = #{status}, set response = #{response}
+        update interest set status = #{status}
+        where id = #{id}
+    </update>
+
+    <update id="updateResponse">
+        update interest set response = #{response}
+        where id = #{id}
+    </update>
+
+    <update id="update">
+        update interest set status = #{status}, response = #{res}
         where id = #{id}
     </update>
 

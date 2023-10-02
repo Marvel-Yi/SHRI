@@ -9,7 +9,7 @@ import java.util.List;
 public interface InterestMapper {
     int insertInterest(Interest interest);
 
-    int updateStatus(int id, int status, String response);
+    int update(int id, int status, String res);
 
     List<Interest> selectInterests(int status, int offset, int limit);
 

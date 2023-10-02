@@ -6,16 +6,16 @@
     <sql id="selectFields">
         id, user_id, passport_no, passport_name, gender, birth, country, pass_type, fin_no, pass_expire, address,
         postal_code, academic_institution_name, academic_qualification_name, qualification_complete_year, company_name,
-        company_industry, sponsor_type, info_source, apply_date
+        company_industry, sponsor_type, info_source
     </sql>
 
     <insert id="insertAppFormData" parameterType="UserAppFormData" keyProperty="id">
         insert into user_app_form_data (user_id, passport_no, passport_name, gender, birth, country, pass_type, fin_no,
         pass_expire, address, postal_code, academic_institution_name, academic_qualification_name,
-        qualification_complete_year, company_name, company_industry, sponsor_type, info_source, apply_date)
+        qualification_complete_year, company_name, company_industry, sponsor_type, info_source)
         values (#{userId}, #{passportNo}, #{passportName}, #{gender}, #{birth}, #{country}, #{passType}, #{finNo},
         #{passExpire}, #{address}, #{postalCode}, #{academicInstitutionName}, #{academicQualificationName},
-        #{qualificationCompleteYear}, #{companyName}, #{companyIndustry}, #{sponsorType}, #{infoSource}, #{applyDate})
+        #{qualificationCompleteYear}, #{companyName}, #{companyIndustry}, #{sponsorType}, #{infoSource})
     </insert>
 
     <select id="hasUserFormData" resultType="int">

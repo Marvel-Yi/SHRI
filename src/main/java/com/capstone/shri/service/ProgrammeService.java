@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,16 +32,14 @@ public class ProgrammeService {
     @Autowired
     private AppFormDataMapper appFormDataMapper;
 
-    public List<Programme> getAllProgrammes(int cur, int limit) {
-        return programmeMapper.selectProgrammeList(CommonUtil.getOffset(cur, limit), limit);
-    }
-
     public String getProgrammeById(int programmeId, User user) {
         Programme programme = programmeMapper.selectProgrammeById(programmeId);
         boolean hasApplied = (user != null && applicationMapper.hasApplied(user.getId(), programmeId) > 0);
+        boolean hasFormData = appFormDataMapper.hasUserFormData(user.getId()) > 0;
         Map<String, Object> map = new HashMap<>();
         map.put("programme", programme);
-        map.put("has applied", hasApplied);
+        map.put("hasApplied", hasApplied);
+        map.put("hasFormData", hasFormData);
         return CommonUtil.getJSONString(0, "ok", map);
     }
 
@@ -62,19 +61,35 @@ public class ProgrammeService {
     }
 
     @Transactional(isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED)
-    public String apply(UserAppFormData appFormData, int programmeId, byte[] signature, User user) {
-        if (appFormData != null) {
+    public String apply(UserAppFormData appFormData, int programmeId, User user) {
+        if (appFormData.getPassportNo() != null) {
+            appFormData.setUserId(user.getId());
             appFormDataMapper.insertAppFormData(appFormData);
         }
+
+        Programme programme = programmeMapper.selectProgrammeById(programmeId);
         UserApplication app = new UserApplication();
         app.setUserId(user.getId());
+        app.setUserName(user.getUserName());
+        app.setUserEmail(user.getEmail());
         app.setProgrammeId(programmeId);
-        app.setSignature(signature);
+        app.setProgrammeName(programme.getName());
+        app.setApplyDate(new Date());
         applicationMapper.insertApplication(app);
         return CommonUtil.getJsonRes(0, "ok", null);
     }
 
     public UserAppFormData getFormData(int userId) {
         return appFormDataMapper.selectFormDataByUserId(userId);
+    }
+
+    public String getApplications(int status, int current, int limit) {
+        List<UserApplication> userApplications = applicationMapper.selectApplications(status, CommonUtil.getOffset(current, limit), limit);
+        return CommonUtil.getJsonRes(0, "ok", userApplications);
+    }
+
+    public String getUserApplications(int userId) {
+        List<UserApplication> applications = applicationMapper.selectApplicationsByUserId(userId);
+        return CommonUtil.getJsonRes(0, "ok", applications);
     }
 }

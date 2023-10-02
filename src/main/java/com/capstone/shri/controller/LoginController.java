@@ -31,6 +31,7 @@ public class LoginController implements CommonConstant {
                 Cookie cookie = new Cookie("ticket", uuid.toString());
                 cookie.setPath("/");
                 response.addCookie(cookie);
+                response.setHeader("Set-Cookie", "ticket=" + uuid + ";SameSite=None;Secure");
             }
         }
         return jsonObject.toJSONString();

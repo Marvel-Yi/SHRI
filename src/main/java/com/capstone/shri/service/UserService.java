@@ -26,9 +26,6 @@ public class UserService implements CommonConstant {
     @Autowired
     private MailClient mailClient;
 
-    @Autowired
-    private AppFormDataMapper appFormDataMapper;
-
     public String register(User user) {
         // null or blank
         if (user == null) {
@@ -54,7 +51,7 @@ public class UserService implements CommonConstant {
         }
 
         user.setPassword(CommonUtil.md5(user.getPassword()));
-        user.setUserType(0);
+        user.setUserType(USER_TYPE_ORDINARY);
         user.setCreateTime(new Date());
         userMapper.insertUser(user);
 
@@ -102,11 +99,10 @@ public class UserService implements CommonConstant {
 
         json.put("code", 0);
         json.put("msg", loginTicket.getUuid());
+        json.put("userId", user.getId());
         json.put("userName", user.getUserName());
         json.put("userMail", user.getEmail());
         json.put("userType", user.getUserType());
-        boolean hasFormData = appFormDataMapper.hasUserFormData(user.getId()) > 0;
-        json.put("hasFormData", hasFormData);
         return json;
     }
 
