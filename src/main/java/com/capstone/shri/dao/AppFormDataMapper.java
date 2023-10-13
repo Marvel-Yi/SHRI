@@ -10,4 +10,6 @@ public interface AppFormDataMapper {
     int hasUserFormData(int userId);
 
     UserAppFormData selectFormDataByUserId(int userId);
+
+    int update(int userId, UserAppFormData data);
 }

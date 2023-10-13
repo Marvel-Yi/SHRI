@@ -76,7 +76,7 @@ public class ProgrammeService {
         app.setProgrammeName(programme.getName());
         app.setApplyDate(new Date());
         applicationMapper.insertApplication(app);
-        return CommonUtil.getJsonRes(0, "ok", null);
+        return CommonUtil.getJsonRes(0, "ok", app);
     }
 
     public UserAppFormData getFormData(int userId) {
@@ -91,5 +91,10 @@ public class ProgrammeService {
     public String getUserApplications(int userId) {
         List<UserApplication> applications = applicationMapper.selectApplicationsByUserId(userId);
         return CommonUtil.getJsonRes(0, "ok", applications);
+    }
+
+    public String updateUserAppFormData(int userId, UserAppFormData data) {
+        appFormDataMapper.update(userId, data);
+        return CommonUtil.getJsonRes(0, "ok", null);
     }
 }

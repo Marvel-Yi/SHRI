@@ -28,4 +28,15 @@
         from user_app_form_data
         where user_id = #{userId}
     </select>
+
+    <update id="update" parameterType="UserAppFormData">
+        update user_app_form_data
+        set passport_no = #{passportNo}, passport_name = #{passportName}, gender = #{gender}, birth = #{birth},
+        country = #{country}, pass_type = #{passType}, fin_no = #{finNo}, pass_expire = #{passExpire},
+        address = #{address}, postal_code = #{postalCode}, academic_institution_name = #{academicInstitutionName},
+        academic_qualification_name = #{academicQualificationName}, qualification_complete_year = #{qualificationCompleteYear},
+        company_name = #{companyName}, company_industry = #{companyIndustry}, sponsor_type = #{sponsorType},
+        info_source = #{infoSource}
+        where user_id = #{userId}
+    </update>
 </mapper>

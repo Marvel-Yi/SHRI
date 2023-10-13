@@ -89,13 +89,17 @@ public class UserService implements CommonConstant {
             return json;
         }
 
-        // generate login ticket
-        LoginTicket loginTicket = new LoginTicket();
-        loginTicket.setUserId(user.getId());
-        loginTicket.setUuid(CommonUtil.generateUUID());
-        loginTicket.setLoginStatus(0); // 0 means status login
-        loginTicket.setExpired(new Date(System.currentTimeMillis() + LOGIN_EXPIRE_SECONDS * 1000));
-        loginTicketMapper.insertTicket(loginTicket);
+        LoginTicket loginTicket = loginTicketMapper.selectByUserId(user.getId());
+        if (loginTicket == null) {
+            loginTicket = new LoginTicket();
+            loginTicket.setUserId(user.getId());
+            loginTicket.setUuid(CommonUtil.generateUUID());
+            loginTicket.setLoginStatus(0); // 0 means logged in
+            loginTicket.setExpired(new Date(System.currentTimeMillis() + LOGIN_EXPIRE_SECONDS * 1000));
+            loginTicketMapper.insertTicket(loginTicket);
+        } else {
+            loginTicketMapper.updateTicket(0, new Date(System.currentTimeMillis() + LOGIN_EXPIRE_SECONDS * 1000));
+        }
 
         json.put("code", 0);
         json.put("msg", loginTicket.getUuid());

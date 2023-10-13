@@ -56,6 +56,16 @@ public class ProgrammeController implements CommonConstant {
         return CommonUtil.getJsonRes(-1, "access denied", null);
     }
 
+    @PostMapping("/programme/application/update")
+    public String updateAppFormData(@RequestBody UserAppFormData appFormData) {
+        User user = hostHolder.getUser();
+        if (user == null) {
+            return CommonUtil.getJsonRes(-1, "please login", null);
+        }
+
+        return programmeService.updateUserAppFormData(user.getId(), appFormData);
+    }
+
     @GetMapping("/programme/application")
     public String getApplications(@RequestParam(name = "status") int status, @RequestParam(name = "current") int current, @RequestParam(name = "limit") int limit) {
         User user = hostHolder.getUser();

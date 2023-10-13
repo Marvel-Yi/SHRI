@@ -17,4 +17,15 @@
         from login_ticket
         where uuid = #{uuid}
     </select>
+
+    <select id="selectByUserId" resultType="LoginTicket">
+        select <include refid="selectFields"></include>
+        from login_ticket
+        where user_id = #{userId}
+    </select>
+
+    <update id="updateTicket">
+        update login_ticket
+        set login_status = #{loginStatus}, expired = #{expired}
+    </update>
 </mapper>

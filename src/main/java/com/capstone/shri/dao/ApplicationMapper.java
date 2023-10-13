@@ -14,4 +14,6 @@ public interface ApplicationMapper {
     List<UserApplication> selectApplications(int status, int offset, int limit);
 
     List<UserApplication> selectApplicationsByUserId(int userId);
+
+    int updateSignature(int appId, byte[] signature);
 }
