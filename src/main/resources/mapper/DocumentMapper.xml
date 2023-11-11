@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.capstone.shri.dao.DocumentMapper">
+    <sql id="selectFields">
+        id, path, name, suffix, create_time, document_type, user_id, app_id
+    </sql>
+
+    <insert id="insertDocument" parameterType="Document" keyProperty="id">
+        insert into document (path, name, suffix, create_time, document_type, user_id, app_id)
+        values (#{path}, #{name}, #{suffix}, #{createTime}, #{documentType}, #{userId}, #{appId})
+    </insert>
+
+    <select id="hasDocument" resultType="int">
+        select count(*)
+        from document
+        where user_id = #{userId} and app_id = #{appId} and document_type = #{documentType}
+    </select>
+
+    <delete id="deleteDocument">
+        delete from document
+        where user_id = #{userId} and app_id = #{appId} and document_type = #{documentType}
+    </delete>
+
+    <select id="selectDocumentByName" resultType="Document">
+        select <include refid="selectFields"></include>
+        from document
+        where name = #{name}
+    </select>
+
+    <select id="selectAllDocuments" resultType="Document">
+        select <include refid="selectFields"></include>
+        from document
+    </select>
+</mapper>
