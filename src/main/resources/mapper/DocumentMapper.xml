@@ -33,4 +33,10 @@
         select <include refid="selectFields"></include>
         from document
     </select>
+
+    <select id="selectUserAppDocNames" resultType="Document">
+        select <include refid="selectFields"></include>
+        from document
+        where user_id = #{userId} and app_id = #{appId}
+    </select>
 </mapper>

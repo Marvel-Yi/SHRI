@@ -16,4 +16,6 @@ public interface DocumentMapper {
     Document selectDocumentByName(String name);
 
     List<Document> selectAllDocuments();
+
+    List<Document> selectUserAppDocNames(int userId, int appId);
 }

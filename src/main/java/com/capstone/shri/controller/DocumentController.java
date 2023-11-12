@@ -1,5 +1,6 @@
 package com.capstone.shri.controller;
 
+import com.capstone.shri.dao.UserMapper;
 import com.capstone.shri.entity.Document;
 import com.capstone.shri.entity.User;
 import com.capstone.shri.service.DocumentService;
@@ -31,6 +32,9 @@ public class DocumentController {
     @Autowired
     private DocumentService documentService;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @PostMapping("/application/sign")
     public String studentSign(int appId, String signature) {
         User user = hostHolder.getUser();
@@ -42,14 +46,15 @@ public class DocumentController {
     }
 
     @PostMapping("/document/upload")
-    public String uploadApplicationFile(MultipartFile multipartFile, int documentType, int appId) {
-        User user = hostHolder.getUser();
-        if (user == null) {
-            return CommonUtil.getJsonRes(-1, "please login", null);
-        }
-        if (multipartFile.isEmpty()) {
+    public String uploadApplicationFile(@RequestParam(name = "file") MultipartFile multipartFile,
+                                        @RequestParam(name = "documentType") int documentType,
+                                        @RequestParam(name = "appId") int appId,
+                                        @RequestParam(name = "userId") int userId) {
+        if (multipartFile == null || multipartFile.isEmpty()) {
             return CommonUtil.getJsonRes(-1, "file empty", null);
         }
+
+        User user = userMapper.selectById(userId);
 
         return documentService.uploadApplicationFile(multipartFile, documentType, appId, user);
     }
@@ -87,22 +92,25 @@ public class DocumentController {
             return CommonUtil.getJSONString(-1, "File does not exist.");
         }
 
+        ServletOutputStream resOutputStream = null;
+
         try (InputStream inputStream = documentService.getDocInputStream(doc);
              BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
              ServletOutputStream outputStream = response.getOutputStream();) {
             response.setContentType("application/pdf");
-            response.addHeader("Content-Disposition", "inline; filename=" + fileName + ".pdf");
+            response.setHeader("Content-Disposition", "inline; filename=" + URLEncoder.encode(fileName, "UTF-8"));
             byte[] bytes = new byte[1024];
             int len;
             while ((len = bufferedInputStream.read(bytes)) > 0) {
                 outputStream.write(bytes, 0, len);
             }
+            resOutputStream = outputStream;
         } catch (UnsupportedEncodingException e) {
             logger.error(e.toString());
         } catch (IOException ioException) {
             logger.error(ioException.toString());
         }
 
-        return CommonUtil.getJSONString(0, "ok");
+        return CommonUtil.getJsonRes(0, "ok", resOutputStream);
     }
 }

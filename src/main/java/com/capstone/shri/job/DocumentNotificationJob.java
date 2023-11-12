@@ -36,7 +36,7 @@ public class DocumentNotificationJob implements CommonConstant {
 
     @PostConstruct
     private void init() {
-//        scheduledExecutorService.scheduleAtFixedRate(new DocumentNotification(), 0, 1, TimeUnit.DAYS);
+//        scheduledExecutorService.scheduleAtFixedRate(new DocumentNotification(), 0, 3, TimeUnit.DAYS);
     }
 
     private class DocumentNotification implements Runnable {

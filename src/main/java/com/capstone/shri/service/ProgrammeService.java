@@ -3,11 +3,9 @@ package com.capstone.shri.service;
 import com.capstone.shri.controller.dto.ProgrammeFilterReq;
 import com.capstone.shri.dao.AppFormDataMapper;
 import com.capstone.shri.dao.ApplicationMapper;
+import com.capstone.shri.dao.DocumentMapper;
 import com.capstone.shri.dao.ProgrammeMapper;
-import com.capstone.shri.entity.Programme;
-import com.capstone.shri.entity.User;
-import com.capstone.shri.entity.UserAppFormData;
-import com.capstone.shri.entity.UserApplication;
+import com.capstone.shri.entity.*;
 import com.capstone.shri.util.CommonUtil;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +14,8 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ProgrammeService {
@@ -31,6 +27,9 @@ public class ProgrammeService {
 
     @Autowired
     private AppFormDataMapper appFormDataMapper;
+
+    @Autowired
+    private DocumentMapper documentMapper;
 
     public String getProgrammeById(int programmeId, User user) {
         Programme programme = programmeMapper.selectProgrammeById(programmeId);
@@ -90,11 +89,22 @@ public class ProgrammeService {
 
     public String getUserApplications(int userId) {
         List<UserApplication> applications = applicationMapper.selectApplicationsByUserId(userId);
-        return CommonUtil.getJsonRes(0, "ok", applications);
+        List<Map<String, Object>> appVOList = new ArrayList<>();
+        for (UserApplication app : applications) {
+            Map<String, Object> appVO = new HashMap<>();
+            appVO.put("application", app);
+
+            List<Document> userAppDocs = documentMapper.selectUserAppDocNames(app.getUserId(), app.getId());
+            List<String> docNames = userAppDocs.stream().map(doc -> doc.getName()).collect(Collectors.toList());
+            appVO.put("docNames", docNames);
+
+            appVOList.add(appVO);
+        }
+        return CommonUtil.getJsonRes(0, "ok", appVOList);
     }
 
-    public String updateUserAppFormData(int userId, UserAppFormData data) {
-        appFormDataMapper.update(userId, data);
-        return CommonUtil.getJsonRes(0, "ok", null);
+    public String updateUserAppFormData(UserAppFormData data) {
+        appFormDataMapper.update(data);
+        return CommonUtil.getJsonRes(0, "ok", data);
     }
 }

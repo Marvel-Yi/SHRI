@@ -11,5 +11,5 @@ public interface AppFormDataMapper {
 
     UserAppFormData selectFormDataByUserId(int userId);
 
-    int update(int userId, UserAppFormData data);
+    int update(UserAppFormData data);
 }

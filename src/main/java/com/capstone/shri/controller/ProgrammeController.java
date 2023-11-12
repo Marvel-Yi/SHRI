@@ -63,7 +63,11 @@ public class ProgrammeController implements CommonConstant {
             return CommonUtil.getJsonRes(-1, "please login", null);
         }
 
-        return programmeService.updateUserAppFormData(user.getId(), appFormData);
+        if (user.getId() != appFormData.getUserId()) {
+            return CommonUtil.getJSONString(-1, "access denied");
+        }
+
+        return programmeService.updateUserAppFormData(appFormData);
     }
 
     @GetMapping("/programme/application")
