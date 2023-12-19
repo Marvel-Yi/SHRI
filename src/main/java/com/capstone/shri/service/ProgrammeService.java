@@ -107,4 +107,9 @@ public class ProgrammeService {
         appFormDataMapper.update(data);
         return CommonUtil.getJsonRes(0, "ok", data);
     }
+
+    public String changeAppStatus(int appId, int status) {
+        applicationMapper.updateStatus(appId, status);
+        return CommonUtil.getJSONString(0, "ok");
+    }
 }

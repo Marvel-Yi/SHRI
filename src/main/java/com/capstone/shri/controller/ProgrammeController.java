@@ -89,4 +89,9 @@ public class ProgrammeController implements CommonConstant {
 
         return programmeService.getUserApplications(userId);
     }
+
+    @PostMapping("programme/application/decide")
+    public String makeDecision(@RequestParam(name = "appId") int appId, @RequestParam(name = "appStatus") int appStatus) {
+        return programmeService.changeAppStatus(appId, appStatus);
+    }
 }
