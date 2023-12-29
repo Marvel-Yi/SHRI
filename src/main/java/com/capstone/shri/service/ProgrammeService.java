@@ -108,8 +108,8 @@ public class ProgrammeService {
         return CommonUtil.getJsonRes(0, "ok", data);
     }
 
-    public String changeAppStatus(int appId, int status) {
-        applicationMapper.updateStatus(appId, status);
+    public String changeAppStatus(int appId, int status, String advice) {
+        applicationMapper.updateStatus(appId, status, advice, new Date());
         return CommonUtil.getJSONString(0, "ok");
     }
 }

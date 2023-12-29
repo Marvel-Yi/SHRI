@@ -3,6 +3,7 @@ package com.capstone.shri.dao;
 import com.capstone.shri.entity.UserApplication;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.Date;
 import java.util.List;
 
 @Mapper
@@ -19,5 +20,5 @@ public interface ApplicationMapper {
 
     int updateSignature(int appId, byte[] signature);
 
-    int updateStatus(int appId, int status);
+    int updateStatus(int appId, int status, String advice, Date updateDate);
 }

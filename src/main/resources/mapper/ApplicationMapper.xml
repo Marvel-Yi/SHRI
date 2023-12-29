@@ -4,12 +4,12 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.capstone.shri.dao.ApplicationMapper">
     <sql id="selectFields">
-        id, user_id, user_name, user_email, programme_id, programme_name, signature, management_signature, programme_charge_signature, status, apply_date
+        id, user_id, user_name, user_email, programme_id, programme_name, signature, management_signature, programme_charge_signature, status, apply_date, update_date, advice, has_decision_sent
     </sql>
 
     <insert id="insertApplication" parameterType="UserApplication" keyProperty="id">
-        insert into user_application (user_id, user_name, user_email, programme_id, programme_name, signature, management_signature, programme_charge_signature, status, apply_date)
-        values (#{userId}, #{userName}, #{userEmail}, #{programmeId}, #{programmeName}, #{signature}, #{managementSignature}, #{programmeInChargeSignature}, #{status}, #{applyDate})
+        insert into user_application (user_id, user_name, user_email, programme_id, programme_name, signature, management_signature, programme_charge_signature, status, apply_date, update_date, advice, has_decision_sent)
+        values (#{userId}, #{userName}, #{userEmail}, #{programmeId}, #{programmeName}, #{signature}, #{managementSignature}, #{programmeInChargeSignature}, #{status}, #{applyDate}, #{updateDate}, #{advice}, #{hasDecisionSent})
     </insert>
 
     <select id="hasApplied" resultType="int">
@@ -37,7 +37,7 @@
     </select>
 
     <update id="updateStatus">
-        update user_application set status = #{status}
+        update user_application set status = #{status}, advice = #{advice}, update_date = #{updateDate}
         where id = #{appId}
     </update>
     

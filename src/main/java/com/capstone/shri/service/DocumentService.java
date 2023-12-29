@@ -88,7 +88,7 @@ public class DocumentService implements CommonConstant {
         }
 
         if (isUserAppDocumentComplete(user.getId(), appId)) {
-            applicationMapper.updateStatus(appId, APPLICATION_STATUS_UNDER_REVIEW);
+            applicationMapper.updateStatus(appId, APPLICATION_STATUS_UNDER_REVIEW, null, new Date());
         }
         return CommonUtil.getJsonRes(0, "ok", newFileName);
     }
