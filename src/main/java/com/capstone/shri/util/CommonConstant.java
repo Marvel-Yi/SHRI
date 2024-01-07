@@ -28,4 +28,8 @@ public interface CommonConstant {
     int EMPLOYMENT_CERTIFICATE = 2;
 
     int APPLICATION_STATUS_UNDER_REVIEW = 1;
+
+    int APPLICATION_STATUS_REJECTION = 3;
+
+    int APPLICATION_STATUS_OFFER = 4;
 }

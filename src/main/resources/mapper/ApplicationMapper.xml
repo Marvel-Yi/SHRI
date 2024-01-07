@@ -30,6 +30,12 @@
         where user_id = #{userId}
     </select>
 
+    <select id="selectDecidedApps" resultType="UserApplication">
+        select <include refid="selectFields"></include>
+        from user_application
+        where has_decision_sent = 0 and (status = 3 or status = 4)
+    </select>
+
     <select id="selectApplicationById" resultType="UserApplication">
         select <include refid="selectFields"></include>
         from user_application
@@ -43,6 +49,11 @@
     
     <update id="updateSignature" parameterType="byte[]">
         update user_application set signature = #{signature}
+        where id = #{appId}
+    </update>
+
+    <update id="updateHasSent">
+        update user_application set has_decision_sent = 1
         where id = #{appId}
     </update>
 </mapper>

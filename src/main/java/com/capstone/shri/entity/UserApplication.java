@@ -19,5 +19,5 @@ public class UserApplication {
     private Date applyDate;
     private Date updateDate;
     private String advice;
-    private boolean hasDecisionSent;
+    private int hasDecisionSent; // 0: has not sent, 1: has sent
 }

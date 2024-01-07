@@ -14,6 +14,8 @@ public interface ApplicationMapper {
 
     List<UserApplication> selectApplications(int status, int offset, int limit);
 
+    List<UserApplication> selectDecidedApps();
+
     List<UserApplication> selectApplicationsByUserId(int userId);
 
     UserApplication selectApplicationById(int id);
@@ -21,4 +23,6 @@ public interface ApplicationMapper {
     int updateSignature(int appId, byte[] signature);
 
     int updateStatus(int appId, int status, String advice, Date updateDate);
+
+    int updateHasSent(int appId);
 }
