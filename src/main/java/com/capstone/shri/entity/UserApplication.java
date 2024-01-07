@@ -15,7 +15,7 @@ public class UserApplication {
     private String signature;
     private String managementSignature;
     private String programmeInChargeSignature;
-    private int status; // 0: files not uploaded, 1: under review, 2: pending, 3: rejected, 4: admitted
+    private int status; // 0: files not uploaded, 1: under review, 2: pending, 3: rejected, 4: admitted, 5: confirmed, 6: canceled
     private Date applyDate;
     private Date updateDate;
     private String advice;
