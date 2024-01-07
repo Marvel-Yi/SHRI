@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.io.File;
 
 
 @Component
@@ -22,7 +23,7 @@ public class MailClient {
     @Value("${spring.mail.username}")
     private String from;
 
-    public void send(String to, String subject, String text) {
+    public void send(String to, String subject, String text, File file) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message);
@@ -30,6 +31,9 @@ public class MailClient {
             helper.setTo(to);
             helper.setSubject(subject);
             helper.setText(text);
+            if (file != null) {
+                helper.addAttachment("Acceptance Form", file);
+            }
             mailSender.send(helper.getMimeMessage());
         } catch (MessagingException e) {
             logger.error("Sending email failed: " + e.getMessage());

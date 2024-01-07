@@ -57,7 +57,7 @@ public class UserService implements CommonConstant {
 
         // send an email for activation
         String greeting = "Hi " + user.getUserName() + ", you have registered successfully!";
-        mailClient.send(user.getEmail(), EMAIL_SUBJECT_REGISTRATION, greeting);
+        mailClient.send(user.getEmail(), EMAIL_SUBJECT_REGISTRATION, greeting, null);
 
         return CommonUtil.getJSONString(0, "registration succeeded");
     }

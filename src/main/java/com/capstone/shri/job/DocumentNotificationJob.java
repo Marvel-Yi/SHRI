@@ -83,7 +83,7 @@ public class DocumentNotificationJob implements CommonConstant {
                     String text = "Dear " + userName + "! I hope this email finds you well. I am writing to remind you about the remaining documents needed for your "
                             + programmeName + " application. Please submit the required documents on our website as soon as possible to complete your application process.";
 
-                    mailClient.send(email, subject, text);
+                    mailClient.send(email, subject, text, null);
                     logger.info("Reminder user " + userName + " to upload documents for " + programmeName + " application.");
                 }
             }

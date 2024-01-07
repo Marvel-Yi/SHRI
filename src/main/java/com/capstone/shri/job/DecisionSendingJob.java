@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -32,11 +33,14 @@ public class DecisionSendingJob {
     @Autowired
     private MailClient mailClient;
 
+    @Value("${offer.path}")
+    private String offerDocumentPath;
+
     private static final ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
 
     @PostConstruct
     private void init() {
-        scheduledExecutorService.scheduleAtFixedRate(new DecisionSending(), 0, 15, TimeUnit.SECONDS);
+        scheduledExecutorService.scheduleAtFixedRate(new DecisionSending(), 0, 10, TimeUnit.SECONDS);
     }
 
     private class DecisionSending implements Runnable, CommonConstant {
@@ -57,17 +61,16 @@ public class DecisionSendingJob {
                         text = text.replace("{studentName}", userName).replace("{programmeName}", programmeName);
                         String advice = StringUtils.isBlank(app.getAdvice()) ? "" : ADVICE_PREFIX + app.getAdvice() + "\n\n";
                         text = text.replace("{advice}", advice);
+                        logger.info("[DecisionSendingJob] Application outcome notification has sent. AppId: " + appId + "-Rejection");
                         break;
 
                     case APPLICATION_STATUS_OFFER:
                         text = OFFER_EMAIL_CONTENT;
                         text = text.replace("{studentName}", userName).replace("{programmeName}", programmeName);
+                        logger.info("[DecisionSendingJob] Application outcome notification has sent. AppId: " + appId + "-Offer");
                         break;
                 }
-                // transaction
-                mailClient.send(email, subject, text);
-                String outcome = app.getStatus() == APPLICATION_STATUS_REJECTION ? "Rejection" : "Offer";
-                logger.info("[DecisionSendingJob] Application outcome notification has sent. AppId: " + appId + "-" + outcome);
+                mailClient.send(email, subject, text, null);
                 applicationMapper.updateHasSent(appId);
             }
         }

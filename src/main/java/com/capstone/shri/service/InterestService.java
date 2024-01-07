@@ -22,7 +22,7 @@ public class InterestService implements CommonConstant {
 
     public int insertInterest(Interest interest) {
         String reply = "Hi, " + interest.getUserName() + " we have received your submission, we will send you a reply soon, please check your email box.";
-        mailClient.send(interest.getUserEmail(), EMAIL_SUBJECT_INTEREST_SUBMISSION, reply);
+        mailClient.send(interest.getUserEmail(), EMAIL_SUBJECT_INTEREST_SUBMISSION, reply, null);
         return interestMapper.insertInterest(interest);
     }
 
@@ -38,6 +38,6 @@ public class InterestService implements CommonConstant {
 
     public void replyInterest(Interest interest) {
         interestMapper.update(interest.getId(), TYPE_PROCESSED, interest.getResponse());
-        mailClient.send(interest.getUserEmail(), EMAIL_SUBJECT_INTEREST_RESPONSE, interest.getResponse());
+        mailClient.send(interest.getUserEmail(), EMAIL_SUBJECT_INTEREST_RESPONSE, interest.getResponse(), null);
     }
 }
