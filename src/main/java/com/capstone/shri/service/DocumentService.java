@@ -67,8 +67,7 @@ public class DocumentService implements CommonConstant {
         if (!".pdf".equals(suffixName)) {
             return CommonUtil.getJSONString(-1, "Please upload pdf file.");
         }
-
-        String newFileName = user.getUserName() + "-" + appId + "-" + documentType + suffixName;
+        String newFileName = documentType + "-" + user.getUserName() + "-" + appId + "-" + suffixName;
         documentMapper.deleteDocument(user.getId(), appId, documentType);
         File newFile = new File(fileUploadPath, newFileName);
         try {

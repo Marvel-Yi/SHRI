@@ -84,7 +84,18 @@ public class ProgrammeService {
 
     public String getApplications(int status, int current, int limit) {
         List<UserApplication> userApplications = applicationMapper.selectApplications(status, CommonUtil.getOffset(current, limit), limit);
-        return CommonUtil.getJsonRes(0, "ok", userApplications);
+        List<Map<String, Object>> appVOList = new ArrayList<>();
+        for (UserApplication app : userApplications) {
+            Map<String, Object> appVO = new HashMap<>();
+            appVO.put("application", app);
+
+            List<String> docNames = processDocNames(app.getId(), app.getUserId());
+            appVO.put("docNames", docNames);
+
+            appVOList.add(appVO);
+        }
+
+        return CommonUtil.getJsonRes(0, "ok", appVOList);
     }
 
     public String getUserApplications(int userId) {
@@ -94,13 +105,26 @@ public class ProgrammeService {
             Map<String, Object> appVO = new HashMap<>();
             appVO.put("application", app);
 
-            List<Document> userAppDocs = documentMapper.selectUserAppDocNames(app.getUserId(), app.getId());
-            List<String> docNames = userAppDocs.stream().map(doc -> doc.getName()).collect(Collectors.toList());
+            List<String> docNames = processDocNames(app.getId(), app.getUserId());
             appVO.put("docNames", docNames);
 
             appVOList.add(appVO);
         }
         return CommonUtil.getJsonRes(0, "ok", appVOList);
+    }
+
+    private List<String> processDocNames(int appId, int userId) {
+        List<String> docNames = documentMapper.selectUserAppDocNames(userId, appId).stream().map(doc -> doc.getName()).collect(Collectors.toList());
+        boolean[] docTypeMap = new boolean[3];
+        for (String name : docNames) {
+            docTypeMap[Integer.parseInt(name.substring(0, 1))] = true;
+        }
+        for (int i = 0; i < 3; i++) {
+            if (!docTypeMap[i]) {
+                docNames.add(i, "null");
+            }
+        }
+        return docNames;
     }
 
     public String updateUserAppFormData(UserAppFormData data) {
