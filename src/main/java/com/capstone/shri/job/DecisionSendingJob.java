@@ -40,7 +40,7 @@ public class DecisionSendingJob {
 
     @PostConstruct
     private void init() {
-        scheduledExecutorService.scheduleAtFixedRate(new DecisionSending(), 0, 10, TimeUnit.SECONDS);
+        scheduledExecutorService.scheduleAtFixedRate(new DecisionSending(), 0, 1, TimeUnit.DAYS);
     }
 
     private class DecisionSending implements Runnable, CommonConstant {
